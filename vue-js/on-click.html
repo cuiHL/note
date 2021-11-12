@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>on-click</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <p>{{ message }}</p>
+        <button  v-on:click="reverseMessage">反转消息</button>
+        <button  v-on:dblclick="reverseMessage">反转消息</button>
+        <p>
+            <button v-on:click="add">+</button>
+            <span>{{num}}</span>
+            <button v-on:click="sub">-</button>
+        </p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <script>
+        app = new Vue({
+            el : "#app",
+            data : {
+                message : "hello vue.js !",
+                num : 1 
+            },
+            methods : {
+                reverseMessage : function() {
+                    this.message = this.message.split(" ").reverse().join(" ")
+                },
+                add : function () {
+                    this.num += 1 
+                },
+                sub : function () {
+                    this.num -= 1 
+                } 
+            }
+        })
+    </script>
+</body>
+
+

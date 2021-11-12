@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.honglu.note.mapper.ZTreeMapper">
+    <select id="getTree" parameterType="java.lang.String" resultType="org.honglu.note.model.NodeTreeWithIcon">
+        select node_id id, parent_id pId, title name ,  type,
+               case when type = 1 then 'dir' else 'doc' end as iconSkin
+        from t_tree where create_user = #{username}
+    </select>
+
+    <select id="getNode" parameterType="java.lang.Integer" resultType="org.honglu.note.model.NodeField">
+        select node_id id, title, parent_id pId, type, sort, user_id
+        from t_tree where node_id = #{node_id}
+    </select>
+
+    <insert id="insertNode" parameterType="org.honglu.note.model.NodeField" useGeneratedKeys="true"  keyProperty="id">
+        insert into t_tree (title, parent_id, type, sort, user_id, create_user)
+        values (#{title}, #{pId}, #{type}, #{sort}, #{user_id}, #{create_user})
+    </insert>
+
+    <select id="getNewNode" parameterType="org.honglu.note.model.NodeField" resultType="java.lang.Integer">
+        select max(node_id) from t_tree where parent_id = #{pId} and title = #{title} and type = #{type} and create_user = #{create_user}
+    </select>
+
+    <insert id="insertNodeContent" parameterType="Integer">
+        insert into t_content (node_id) values (#{id})
+    </insert>
+
+    <update id="resortTree" parameterType="Integer"  >
+        select @sort:=0;
+        UPDATE t_tree a
+        JOIN(
+            SELECT node_id, @sort:=@sort+1 sort2 FROM t_tree where parent_id = #{pId} ORDER BY sort, node_id
+        ) b ON a.node_id = b.node_id
+        SET a.sort = b.sort2*10
+    </update>
+
+    <update id="updateTitle" parameterType="org.honglu.note.model.NodeField"  >
+        UPDATE t_tree
+        set title = #{title}
+        where node_id = #{id}
+    </update>
+
+    <select id="getChildCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(1) ct from t_tree where parent_id=#{id}
+    </select>
+
+    <delete id="delNode" parameterType="java.lang.Integer">
+        delete from t_tree where node_id = #{node_id};
+        delete from t_content where node_id = #{node_id};
+    </delete>
+
+    <update id="updatePId" parameterType="org.honglu.note.model.NodeMove"  >
+        UPDATE t_tree
+        <set>
+            <if test="pId != null">
+                parent_id = #{pId},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+        </set>
+        where node_id = #{id}
+    </update>
+
+    <select id="getContent" parameterType="java.lang.Integer" resultType="org.honglu.note.model.NodeContent">
+        select node_id id, content, ref_node_id
+        from t_content where node_id = #{id}
+    </select>
+
+    <update id="saveContent" parameterType="org.honglu.note.model.NodeContent"  >
+        UPDATE t_content
+        set content = #{content}
+        where node_id = #{id}
+    </update>
+
+</mapper>

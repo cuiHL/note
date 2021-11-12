@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #to-do-app{
+            width: 300px;
+            margin: 5px auto;
+            box-shadow: 0px 3px 10px 2px rgba(0,0,0,.1);
+        }
+        .view {
+            position: relative;
+            margin-left:10px ;
+        }
+        .biaoti{
+           font-size : 34px;
+           color:  rgb(219, 82, 82);
+           text-align: center;
+           padding-top : 100px;
+           padding-bottom : 10px;
+        }
+        .new-todo{
+            width: 100%;
+            height: 40px;
+            padding-left: 10px;
+            color: rgb(116, 116, 116);
+            box-sizing:border-box;
+            border: 1px solid rgb(236, 236, 236);/*这里之前宽写成100%就出现对不齐的问题*/
+
+        }
+        .destroy{
+            position: absolute;
+            right: 10px;
+            /* top:9px; */
+            font-size: 12px;
+            font-family: '微软雅黑';
+            outline:none;
+            border: 1px solid rgb(236, 236, 236);
+            background-color: white;
+            /* color: rgb(255, 111, 111); */
+
+        }
+        .footer{
+            position : relative;
+            width:  100%;
+            height: 40px;
+            box-sizing:border-box;
+            border: 1px solid rgb(236, 236, 236);
+            background-color: white;
+        }
+        .reft strong{
+            font-weight: 400;
+        }
+
+        .reft{
+            margin-left: 10px;
+        }
+        
+        .right{
+            margin-left: 170px;
+        }
+
+        .footer button{
+            position: absolute;
+            right : 10px;
+            top:9px;
+            background-color: white;
+            border: 0px;
+        }
+
+    </style>
+    <meta charset="utf-8">
+    <title>小黑记事本</title>
+</head>
+
+<body>
+
+    <div id = "to-do-app">
+        <h1 class="biaoti">小黑记事本</h1>
+        <input type = "span" class="new-todo" autofocus="autofocus" v-model="inputValue" @keyup.enter=add(inputValue) />
+        <section>
+            <ul>
+                <li v-for="(item, index) in list"> 
+                    <div class="view">
+                        <span> {{ index+1 }}. </span>
+                        <label> {{ item }}</label>
+                        <button class="destroy" @click="remove (index) ">删除</button>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <footer class="footer">
+            <div>
+                <span v-if="list.length !=0" class="left"> 
+                    <strong>{{list.length}} &nbsp items </strong>
+                </span>
+                <span @click="clear" class="right" v-show="list.length != 0">
+                    <button>clear</button>
+                </span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+
+    <script>
+        var app = new Vue({
+            el : "#to-do-app",
+            data : {
+                inputValue : "记事本",
+                list : [
+                    "记事本",
+                    "记事本",
+                    "记事本"
+                ]
+            },
+            methods : {
+                add : function(p) {
+                    this.list.push(p)
+                },
+                remove : function(index) {
+                    this.list.splice(index, 1)
+                },
+                clear : function() {
+                    this.list = []
+                }
+            }
+        })
+    </script>
+</body>

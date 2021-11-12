@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+    <meta charset="utf-8">
+    <title>登录</title>
+        <link rel="stylesheet" href="./assets/global/css/login.css">
+    </head>
+
+    <body>
+        <div class="box" id = "box">
+            
+            <h2>登录</h2>
+            
+            <form>
+                <div class="inputBox">
+                     <input type="text" name="" v-model="username" required="">
+                     <label>用户名</label>
+                </div>
+
+                <div class="inputBox">
+                    <input type="password" name="" v-model="password" required="">
+                    <label>密码</label>
+                </div>
+            <input type="button" name="" value="登录" v-on:click="submit(username,password)" > 
+            </form>
+            
+        </div>
+
+
+        <script src="./assets/plugins/vue.js"></script>
+        <script src="./assets/plugins/axios.min.js"></script>
+        <script src="./assets/plugins/vue-router.min.js"></script>
+        <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script> -->
+
+        
+
+        <script>
+            var app = new Vue({
+                el : "#box",
+                data : {
+                    username : "",
+                    password : ""
+                },
+
+                methods : {
+                    submit : function(username, password) {
+                        console.log(this.username  + ":" +  this.password)
+                        let data = new FormData();
+                        data.append('username', this.username)
+                        data.append('password', this.password)
+
+                        axios.post("/web/login",data)
+                        .then(res=>{
+                            console.log(res)
+                            
+                            window.location.href = "/vue-js/note.html?username=" + this.username
+                        })
+                    }
+                }
+            })
+        </script>
+
+    </body>
+   
+</html>

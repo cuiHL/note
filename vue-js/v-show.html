@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>on-click</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <img v-show="isShow" src="1.jpg"  alt="上海鲜花港-郁金香"/>
+        <button v-on:click="reverse">反转显示</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+
+    <script>
+        var app = new Vue({
+            el : "#app",
+            data : {
+                isShow:false
+            },
+
+            methods : {
+                reverse : function() {
+                    this.isShow = ~this.isShow
+                }
+            }    
+            
+        })
+    </script>
+
+
+</body>

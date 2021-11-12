@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>v-bind</title>
+
+    <style>
+        .bu {
+            font-size: 50px;
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+
+    <div id = "app">
+        <input type = "text" @keyup.enter="doIt('666')"/>
+        <p>
+            <input class = "bu"  type = "button" value = "点击" v-on:click="doIt(message)"/>
+        </p>
+        
+    </div>
+
+
+    <script>
+        var vue = new Vue({
+            el : "#app",
+            data : {
+                message : "小黑"
+            },
+            methods : {
+                doIt : function(p) {
+                    console.log(p)
+                }
+            }
+        })
+
+    </script>
+</body>
